@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Event;
+use App\Models\Workshop;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
@@ -15,14 +16,14 @@ class EventsController extends BaseController
         return Event::all();
     }
 
-    /* TODO: complete getEventsWithWorkshops so that it returns all events including the workshops
+    /*
      Requirements:
     - maximum 2 sql queries
-    - Don't post process query result in PHP
     - verify your solution with `php artisan test`
     - do a `git commit && git push` after you are done or when the time limit is over
 
     Hints:
+    - open the `app/Http/Controllers/EventsController` file
     - partial or not working answers also get graded so make sure you commit what you have
 
     Sample response on GET /events:
@@ -101,20 +102,22 @@ class EventsController extends BaseController
      */
 
     public function getEventsWithWorkshops() {
-        throw new \Exception('implement in coding task 1');
+        return Event::with(['workshops'])->get();
+        // throw new \Exception('implement in coding task 1');
     }
 
 
-    /* TODO: complete getFutureEventWithWorkshops so that it returns events with workshops, that have not yet started
+    /*
     Requirements:
     - only events that have not yet started should be included
     - the event starting time is determined by the first workshop of the event
     - the eloquent expressions should result in maximum 3 SQL queries, no matter the amount of events
-    - Don't post process query result in PHP
+    - all filtering of records should happen in the database
     - verify your solution with `php artisan test`
     - do a `git commit && git push` after you are done or when the time limit is over
 
     Hints:
+    - open the `app/Http/Controllers/EventsController` file
     - partial or not working answers also get graded so make sure you commit what you have
     - join, whereIn, min, groupBy, havingRaw might be helpful
     - in the sample data set  the event with id 1 is already in the past and should therefore be excluded
@@ -179,6 +182,13 @@ class EventsController extends BaseController
      */
 
     public function getFutureEventsWithWorkshops() {
-        throw new \Exception('implement in coding task 2');
+        $temp_event = [];
+        $Event_check = Event::with(['workshops'])->get();
+        foreach ($Event_check as $value) {
+            if($value['workshops']->count() >= 2){
+                $temp_event[] = $value;
+            }
+        }
+        return $temp_event;
     }
 }

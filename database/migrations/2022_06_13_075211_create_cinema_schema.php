@@ -8,12 +8,7 @@ class CreateCinemaSchema extends Migration
 {
     /** ToDo: Create a migration that creates all tables for the following user stories
 
-    For an example on how a UI for an api using this might look like, please try to book a show at https://in.bookmyshow.com/.
-    To not introduce additional complexity, please consider only one cinema.
 
-    Please list the tables that you would create including keys, foreign keys and attributes that are required by the user stories.
-
-    ## User Stories
 
      **Movie exploration**
      * As a user I want to see which films can be watched and at what times
@@ -36,7 +31,12 @@ class CreateCinemaSchema extends Migration
      */
     public function up()
     {
-        throw new \Exception('implement in coding task 4, you can ignore this exception if you are just running the initial migrations.');
+        Schema::create('cinemas', function (Blueprint $table) {
+            $table->id();
+            $table->string('name');
+            $table->timestamps();
+        });
+        // throw new \Exception('implement in coding task 4, you can ignore this exception if you are just running the initial migrations.');
     }
 
     /**
